@@ -1,0 +1,24 @@
+{
+  "name": "nodejs-auth-starter",
+  "version": "1.0.0",
+  "description": "Starter for nodejs auth sites",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KyeNormanGill/nodejs-auth-starter.git"
+  },
+  "author": "Kye Norman-Gill",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/KyeNormanGill/nodejs-auth-starter/issues"
+  },
+  "homepage": "https://github.com/KyeNormanGill/nodejs-auth-starter#readme",
+  "dependencies": {
+    "express": "^4.16.2",
+    "express-session": "^1.15.6",
+    "hbs": "^4.0.1"
+  }
+}
