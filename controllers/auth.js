@@ -34,14 +34,13 @@ router.post('/register', async(req, res) => {
 		Password: hash
 	}
 
-	// Find user with same username or email.
+	// Find user with same username or email and return error if found.
 	const userFound = await Users.find({ where: { [Op.or]: [{ Username: user.Username}, { Email: user.Email }] } });
 	if (userFound) return res.render('register', { error: `${userFound.Username === user.Username ? 'Username' : 'Email'} is already in use!` });
-	
-	// Create user.
+
 	const createdUser = await Users.create(user);
 
-	// Add user to the session.
+	// Add user to the session for persistent logins through requests.
 	req.session.user = {
 		Username: createdUser.Username,
 		Email: createdUser.Email,
