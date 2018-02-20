@@ -7,6 +7,23 @@
 	<title>Document</title>
 </head>
 <body>
-	{{title}}
+	<form action="login" method="post">
+		<div>
+			<div>
+			<label>Email</label>
+			<input id="email" type="email" name="email">
+			</div>
+		</div>
+		<div>
+			<label>Password</label>
+			<input id="password" type="password" name="password">
+		</div>
+		<div>
+			<button type="submit">Login</button>
+		</div>
+		{{#if error}}
+			<p>{{error}}</p>
+		{{/if}}
+	</form>
 </body>
 </html>

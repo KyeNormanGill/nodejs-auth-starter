@@ -1,13 +1,17 @@
-const express = require('express');
 const path = require('path');
+const express = require('express');
 const session = require('express-session');
-const test = require('./controllers/test.js');
+const bodyParser = require('body-parser');
+const index = require('./controllers/index.js');
+const auth = require('./controllers/auth.js');
 
 const app = express();
 
 app.set('views', path.resolve(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(session({
 	secret: 'randomkey',
 	name: 'randomname',
@@ -15,12 +19,8 @@ app.use(session({
 	saveUninitialized: true
 }));
 
-app.use((req, res, next) => {
-	console.log(req.session);
-	next();
-});
-
-app.use('/', test);
+app.get('/', index);
+app.use('/auth', auth);
 
 app.listen(8080, '', () => {
 	console.log('Website listening on port: 8080');
