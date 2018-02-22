@@ -3,7 +3,8 @@ const router = express.Router(); // eslint-disable-line new-cap
 const { validLogin, validRegister } = require('../utils.js');
 const bcrypt = require('bcrypt');
 const saltrounds = 10;
-const Users = require('../database/models/Users.js');
+const database = require('../database');
+const Users = database.import('../database/models/Users.js');
 const { Op } = require('sequelize');
 
 router.get('/login', (req, res) => {
