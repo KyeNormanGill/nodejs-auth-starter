@@ -4,7 +4,8 @@
   "description": "Starter for nodejs auth sites",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "sync": "node ./syncDB.js",
+    "site": "node ./index.js"
   },
   "repository": {
     "type": "git",

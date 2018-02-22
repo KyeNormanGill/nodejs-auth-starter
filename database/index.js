@@ -6,7 +6,8 @@ const Database = new Sequelize('database', 'username', 'password', {
 
 	// SQLite only
 	storage: 'database.sqlite',
-	logging: false
+	logging: false,
+	operatorsAliases: false
 });
 
 module.exports = Database;
