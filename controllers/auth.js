@@ -10,12 +10,16 @@ router.get('/login', (req, res) => {
 	res.render('login');
 });
 
-router.post('/login', (req, res) => {
-	if (!validLogin(req.body)) return res.render('login', { error: 'Invalid credentials!' });;
+router.post('/login', async(req, res) => {
+	if (!validLogin(req.body)) return res.render('login', { error: 'Invalid credentials!' });
 
 	// Check db for user.
+	const userFound = await Users.find({ where: { [Op.or]: [{ Username: req.body.username}, { Email: req.body.username }] } });
+	if (!userFound) return res.render('login', { error: 'No account found!' });
 
-	res.render('index')
+	if (!await bcrypt.compare(req.body.password, userFound.Password)) return res.render('login', { error: 'Password incorrect!' });
+
+	res.render('index');
 });
 
 router.get('/register', (req, res) => {
@@ -33,6 +37,9 @@ router.post('/register', async(req, res) => {
 		Email: req.body.email,
 		Password: hash
 	}
+
+	// Ensure only numbers and letters.
+	if (!user.Username.match(/^[0-9a-zA-Z]+$/)) return res.render('register', { error: 'Alphanumeric characters only (Aa-Zz, 0-9)!' });
 
 	// Find user with same username or email and return error if found.
 	const userFound = await Users.find({ where: { [Op.or]: [{ Username: user.Username}, { Email: user.Email }] } });
