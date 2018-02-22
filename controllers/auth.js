@@ -7,7 +7,7 @@ const Users = require('../database/models/Users.js');
 const { Op } = require('sequelize');
 
 router.get('/login', (req, res) => {
-	res.render('login');
+	res.render('login', { user: req.session.user });
 });
 
 router.post('/login', async(req, res) => {
@@ -17,13 +17,21 @@ router.post('/login', async(req, res) => {
 	const userFound = await Users.find({ where: { [Op.or]: [{ Username: req.body.username}, { Email: req.body.username }] } });
 	if (!userFound) return res.render('login', { error: 'No account found!' });
 
+	// Compare plain text password with database hash.
 	if (!await bcrypt.compare(req.body.password, userFound.Password)) return res.render('login', { error: 'Password incorrect!' });
 
-	res.render('index');
+	// Add user to session.
+	req.session.user = {
+		Username: userFound.Username,
+		Email: userFound.Email,
+		ID: userFound.id
+	};
+
+	res.render('index', { user: req.session.user });
 });
 
 router.get('/register', (req, res) => {
-	res.render('register');
+	res.render('register', { user: req.session.user });
 });
 
 router.post('/register', async(req, res) => {
@@ -54,7 +62,7 @@ router.post('/register', async(req, res) => {
 		ID: createdUser.id
 	};
 
-	res.render('index');
+	res.render('index', { user: req.session.user });
 });
 
 module.exports = router;

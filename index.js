@@ -19,7 +19,7 @@ app.use(session({
 	saveUninitialized: true
 }));
 
-app.get('/', index);
+app.use('/', index);
 app.use('/auth', auth);
 
 db.sync().then(() => {
