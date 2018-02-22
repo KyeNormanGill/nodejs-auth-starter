@@ -24,3 +24,5 @@ app.use('/auth', auth);
 app.listen(8080, '', () => {
 	console.log('Website listening on port: 8080');
 });
+
+process.on('unhandledRejection', console.error);

@@ -9,7 +9,5 @@ module.exports = (sequelize, DataTypes) => {
 			unique: true
 		},
 		Password: DataTypes.STRING
-	}, {
-		timestamps: false
 	});
 };
