@@ -1,5 +1,5 @@
 const express = require('express');
-const router = express.Router();
+const router = express.Router(); // eslint-disable-line new-cap
 const { validLogin, validRegister } = require('../utils.js');
 const bcrypt = require('bcrypt');
 const saltrounds = 10;
@@ -14,7 +14,7 @@ router.post('/login', async(req, res) => {
 	if (!validLogin(req.body)) return res.render('login', { error: 'Invalid credentials!' });
 
 	// Check db for user.
-	const userFound = await Users.find({ where: { [Op.or]: [{ Username: req.body.username}, { Email: req.body.username }] } });
+	const userFound = await Users.find({ where: { [Op.or]: [{ Username: req.body.username }, { Email: req.body.username }] } });
 	if (!userFound) return res.render('login', { error: 'No account found!' });
 
 	// Compare plain text password with database hash.
@@ -39,18 +39,18 @@ router.post('/register', async(req, res) => {
 
 	// Hash the password. Never store plain text passwords.
 	const hash = await bcrypt.hash(req.body.password, saltrounds);
-	
+
 	const user = {
 		Username: req.body.username,
 		Email: req.body.email,
 		Password: hash
-	}
+	};
 
 	// Ensure only numbers and letters.
 	if (!user.Username.match(/^[0-9a-zA-Z]+$/)) return res.render('register', { error: 'Alphanumeric characters only (Aa-Zz, 0-9)!' });
 
 	// Find user with same username or email and return error if found.
-	const userFound = await Users.find({ where: { [Op.or]: [{ Username: user.Username}, { Email: user.Email }] } });
+	const userFound = await Users.find({ where: { [Op.or]: [{ Username: user.Username }, { Email: user.Email }] } });
 	if (userFound) return res.render('register', { error: `${userFound.Username === user.Username ? 'Username' : 'Email'} is already in use!` });
 
 	const createdUser = await Users.create(user);
@@ -65,7 +65,7 @@ router.post('/register', async(req, res) => {
 	res.render('index', { user: req.session ? req.session.user : undefined });
 });
 
-router.get('/logout', async(req, res, next) => {
+router.get('/logout', (req, res, next) => {
 	req.session.destroy(err => {
 		if (err) return next(err);
 		res.render('index', { user: req.session ? req.session.user : undefined });
