@@ -7,7 +7,7 @@ const Users = require('../database/models/Users.js');
 const { Op } = require('sequelize');
 
 router.get('/login', (req, res) => {
-	res.render('login', { user: req.session.user });
+	res.render('login', { user: req.session ? req.session.user : undefined });
 });
 
 router.post('/login', async(req, res) => {
@@ -27,11 +27,11 @@ router.post('/login', async(req, res) => {
 		ID: userFound.id
 	};
 
-	res.render('index', { user: req.session.user });
+	res.render('index', { user: req.session ? req.session.user : undefined });
 });
 
 router.get('/register', (req, res) => {
-	res.render('register', { user: req.session.user });
+	res.render('register', { user: req.session ? req.session.user : undefined });
 });
 
 router.post('/register', async(req, res) => {
@@ -62,7 +62,14 @@ router.post('/register', async(req, res) => {
 		ID: createdUser.id
 	};
 
-	res.render('index', { user: req.session.user });
+	res.render('index', { user: req.session ? req.session.user : undefined });
+});
+
+router.get('/logout', async(req, res, next) => {
+	req.session.destroy(err => {
+		if (err) return next(err);
+		res.render('index', { user: req.session ? req.session.user : undefined });
+	});
 });
 
 module.exports = router;

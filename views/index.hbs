@@ -7,7 +7,17 @@
 	<title>Document</title>
 </head>
 <body>
-	Index
-	{{user.Username}}
+	<nav style="text-align:center;background-color:#37d290;padding:10px;">
+		<h1>Welcome to the nodejs auth template</h1>
+	</nav>
+	<div>
+		{{#if user}}
+			<h3>You are logged in {{user.Username}}</h3>
+			<a href="/auth/logout">Logout</a>
+		{{else}}
+			<h3>You are not logged in!</h3>
+			<a href="/auth/login">Login</a> | <a href="/auth/register">Register</a>
+		{{/if}}
+	</div>
 </body>
 </html>
